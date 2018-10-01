@@ -1,7 +1,10 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="post.PostDto" %>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.DriverManager" %>
 <%@ page import="java.sql.ResultSet" %>
-<%@ page import="java.sql.Statement" %><%--
+<%@ page import="java.sql.Statement" %>
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: skyzz
   Date: 2018-10-01
@@ -31,6 +34,19 @@
 		Statement stmt = conn.createStatement();
 		String sql = "SELECT * FROM post ORDER BY idx DESC";
 		rs = stmt.executeQuery(sql);
+
+		ArrayList<PostDto> postList = new ArrayList<>();
+
+		while (rs.next()) {
+			PostDto post = new PostDto();
+			post.setIdx(rs.getInt("idx"));
+			post.setTitle(rs.getString("title"));
+			post.setWriter(rs.getString("writer"));
+			post.setReg_date(rs.getString("reg_date"));
+			post.setCount(rs.getInt("count"));
+			postList.add(post);
+		}
+		request.setAttribute("postList", postList);
 %>
 
 <div class="container">
@@ -48,17 +64,15 @@
 			</tr>
 			</thead>
 			<tbody>
-			<%
-				while (rs.next()) {
-					out.print("<tr>");
-					out.print("<td scope='row'>" + rs.getString("idx") + "</td>");
-					out.print("<td><a href='content.jsp?idx=" + rs.getString("idx") + "'>" + rs.getString("title") + "</a></td>");
-					out.print("<td>" + rs.getString("writer") + "</td>");
-					out.print("<td>" + rs.getString("reg_date") + "</td>");
-					out.print("<td>" + rs.getString("count") + "</td>");
-					out.print("</tr>");
-				}
-			%>
+			<c:forEach items="${postList}" var="post">
+				<tr>
+					<td>${post.idx}</td>
+					<td><a href="content.jsp?idx=${post.idx}">${post.title}</a></td>
+					<td>${post.writer}</td>
+					<td>${post.reg_date}</td>
+					<td>${post.count}</td>
+				</tr>
+			</c:forEach>
 			</tbody>
 		</table>
 		<a class="btn btn-primary" href="write.jsp" role="button">글쓰기</a>
