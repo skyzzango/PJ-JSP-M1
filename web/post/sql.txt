@@ -1,0 +1,11 @@
+# create table for post
+CREATE TABLE post
+(
+    idx number PRIMARY KEY NOT NULL,
+    title varchar2(200) NOT NULL,
+    writer varchar2(20) NOT NULL,
+    reg_date date NOT NULL,
+    count number NOT NULL,
+    content clob NOT NULL
+);
+
