@@ -5,20 +5,21 @@
   Created by IntelliJ IDEA.
   User: skyzz
   Date: 2018-10-01
-  Time: 오후 5:33
+  Time: 오후 8:51
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <html lang="ko">
 <head>
 	<%@include file="/partials/head.jsp" %>
-	<title>게시판 - 게시글 리스트</title>
+	<title>게시판 - 게시글 조회</title>
 </head>
 
 <body>
 
 <%--<%@include file="/partials/nav.jsp" %>--%>
 <%
+	String idx = request.getParameter("idx");
 	try {
 		String driverName = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:XE";
@@ -29,45 +30,53 @@
 		System.out.println("Oracle Database Connection Success.");
 
 		Statement stmt = conn.createStatement();
-		String sql = "SELECT * FROM post ORDER BY idx DESC";
+		String sql = "SELECT * FROM post WHERE idx = " + idx;
 		rs = stmt.executeQuery(sql);
+
+		while (rs.next()) {
 %>
 
 <div class="container">
 
 	<div class="starter-template">
-		<h1>게시글 리스트</h1><br>
-		<table class="table table-hover">
-			<thead>
+		<h1>게시글 조회</h1><br>
+		<table class="table">
 			<tr>
-				<th>번호</th>
-				<th>제목</th>
-				<th>작성자</th>
-				<th>날짜</th>
-				<th>조회수</th>
+				<th colspan="2">번호</th>
+				<td colspan="1"><%=rs.getString("idx")%>
+				</td>
+				<th colspan="2">조회수</th>
+				<td colspan="1"><%=rs.getString("count")%>
+				</td>
 			</tr>
-			</thead>
-			<tbody>
-			<%
-				while (rs.next()) {
-					out.print("<tr>");
-					out.print("<td scope='row'>" + rs.getString("idx") + "</td>");
-					out.print("<td><a href='content.jsp?idx=" + rs.getString("idx") + "'>" + rs.getString("title") + "</a></td>");
-					out.print("<td>" + rs.getString("writer") + "</td>");
-					out.print("<td>" + rs.getString("reg_date") + "</td>");
-					out.print("<td>" + rs.getString("count") + "</td>");
-					out.print("</tr>");
-				}
-			%>
-			</tbody>
+			<tr>
+				<th colspan="2">작성자</th>
+				<td colspan="1"><%=rs.getString("writer")%>
+				</td>
+				<th colspan="2">날짜</th>
+				<td colspan="1"><%=rs.getString("reg_date")%>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2">제목</th>
+				<td colspan="6"><%=rs.getString("title")%>
+				</td>
+			</tr>
+			<tr style="height: 10rem">
+				<th colspan="2">내용</th>
+				<td colspan="6"><%=rs.getString("content")%>
+				</td>
+			</tr>
 		</table>
-		<a class="btn btn-primary" href="write.jsp" role="button">글쓰기</a>
+		<a class="btn btn-primary" href="index.jsp" role="button">목록</a>
+		<a class="btn btn-danger" href="delete.jsp?idx=<%=rs.getString("idx")%>" role="button">삭제</a>
 	</div>
 
 
 </div><!-- /.container -->
 
 <%
+		}
 		conn.close();
 	} catch (Exception e) {
 		System.out.println("Oracle Database Connection Something Problem. <hr>");
