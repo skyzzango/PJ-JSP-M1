@@ -1,8 +1,8 @@
-<%@ page import="java.sql.Connection" %>
-<%@ page import="java.sql.DriverManager" %>
-<%@ page import="java.sql.Statement" %>
+<%@ page import="post.PostDao" %>
+<%@ page import="post.PostDto" %>
 <%@ page import="java.util.Objects" %>
-<%@ page import="java.util.regex.Pattern" %><%--
+<%@ page import="java.util.regex.Pattern" %>
+<%--
   Created by IntelliJ IDEA.
   User: skyzz
   Date: 2018-10-01
@@ -22,7 +22,6 @@
 <%
 	String title = request.getParameter("title");
 	String writer = request.getParameter("writer");
-	int count = 1;
 	String content = request.getParameter("content");
 %>
 <%
@@ -39,26 +38,16 @@
 	}
 %>
 <%
-	try {
-		String driverName = "oracle.jdbc.driver.OracleDriver";
-		String url = "jdbc:oracle:thin:@localhost:1521:XE";
-		Class.forName(driverName);
-		Connection conn = DriverManager.getConnection(url, "iu", "iu1004");
-		System.out.println("Oracle Database Connection Success.");
-
-		Statement stmt = conn.createStatement();
-		String sql = "INSERT INTO POST(idx, title, writer, reg_date, count, content) " +
-				"VALUES(post_seq.nextval, '" + title + "', '" + writer + "', sysdate, " + count + ", '" + content + "')";
-		stmt.executeUpdate(sql);
-
-		conn.close();
-	} catch (Exception e) {
-		System.out.println("Oracle Database Connection Something Problem. <hr>");
-		System.out.println(e.getMessage());
-		e.printStackTrace();
-	} finally {
-		out.println("<script>location.href='index.jsp';</script>");
-	}
+	PostDto post = new PostDto();
+	post.setTitle(request.getParameter("title"));
+	post.setWriter(request.getParameter("writer"));
+	post.setContent(request.getParameter("content"));
+	int result = PostDao.getInstance().insertPost(post);
+	out.print("<script>");
+	if (result == -1) out.println("alert('등록 실패!!')");
+	else out.println("alert('등록 완료!!')");
+	out.println("location.href='index.jsp';");
+	out.print("</script>");
 %>
 
 <div class="container">
