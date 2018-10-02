@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Context>
+	<WatchedResource>WEB-INF/web.xml</WatchedResource>
+	<Resoutce name="jdbc/mySql"
+	          auth="Container"
+	          type="javax.sql.DataSource"
+	          driverClassName="com.mysql.jdbc.Driver"
+	          url="jdbc:mysql://localhost:3306"
+	          username="iu"
+	          password="iu1004"
+
+	          maxActive="100"
+	          maxIdle="20"
+	          minIdle="5"
+	          maxWait="5000"/>
+
+	<Resoutce name="jdbc/myOracle"
+	          auth="Container"
+	          type="javax.sql.DataSource"
+	          driverClassName="oracle.jdbc.driver.OracleDriver"
+	          url="jdbc:oracle:thin:@localhost:1521:XE"
+	          username="iu"
+	          password="iu1004"
+
+	          initialSize="50"
+	          maxIdle="20"
+	          minIdle="5"
+	          maxWaitMillis="5000"/>
+</Context>

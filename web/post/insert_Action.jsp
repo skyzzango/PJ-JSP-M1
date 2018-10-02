@@ -18,7 +18,7 @@
 
 <body>
 
-<%--<%@include file="/partials/nav.jsp" %>--%>
+<%@include file="/partials/nav.jsp" %>
 <%
 	String title = request.getParameter("title");
 	String writer = request.getParameter("writer");

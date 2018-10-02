@@ -15,7 +15,7 @@
 
 <body>
 
-<%--<%@include file="/partials/nav.jsp" %>--%>
+<%@include file="/partials/nav.jsp" %>
 <%
 	int idx = Integer.parseInt(request.getParameter("idx"));
 	PostDto post = PostDao.getInstance().getPost(idx);
@@ -49,7 +49,7 @@
 			</tr>
 		</table>
 		<a class="btn btn-primary" href="index.jsp" role="button">목록</a>
-		<a class="btn btn-danger" href="delete.jsp?idx=${post.idx}" role="button">삭제</a>
+		<a class="btn btn-danger" href="delete_Action.jsp?idx=${post.idx}" role="button">삭제</a>
 	</div>
 
 

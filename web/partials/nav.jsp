@@ -30,8 +30,8 @@
 				<a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown"
 				   aria-haspopup="true" aria-expanded="false">Dropdown</a>
 				<div class="dropdown-menu" aria-labelledby="dropdown01">
-					<a class="dropdown-item" href="${pageContext.request.contextPath}/board/">기본게시판</a>
-					<a class="dropdown-item" href="${pageContext.request.contextPath}/content/">파일 게시판</a>
+					<a class="dropdown-item" href="${pageContext.request.contextPath}/post/">기본게시판</a>
+					<a class="dropdown-item" href="#">파일 게시판</a>
 					<a class="dropdown-item" href="#">Something</a>
 				</div>
 			</li>
@@ -39,17 +39,23 @@
 
 		<div style="margin-right: 2rem">
 			<% if (session.getAttribute("userId") == null) { %>
-			<button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Sign In</button>
+			<button class="btn btn-primary" onclick="document.getElementById('id01').style.display='block'"
+			        style="width:auto;">Sign In
+			</button>
 			<% } else { %>
-			<button onclick="location.href='/user/logoutProc.jsp'" style="width:auto;">Sign Out</button>
+			<button class="btn btn-outline-primary" onclick="location.href='/user/logoutProc.jsp'" style="width:auto;">
+				Sign Out
+			</button>
 			<% } %>
-			<button onclick="document.getElementById('id02').style.display='block'" style="width:auto;">Sign Up</button>
+			<button class="btn btn-primary" onclick="document.getElementById('id02').style.display='block'"
+			        style="width:auto;">Sign Up
+			</button>
 		</div>
 
 		<form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/content/searchIndex.jsp"
 		      method="get">
 			<input class="form-control" name="search" type="search" placeholder="Search" aria-label="Search">
-			<button class="btn btn-outline-success" type="submit">Search</button>
+			<button class="btn btn-outline-success" type="submit" style="margin-left: 1rem">Search</button>
 		</form>
 
 	</div>

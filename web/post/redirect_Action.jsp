@@ -14,7 +14,7 @@
 
 <body>
 
-<%--<%@include file="/partials/nav.jsp" %>--%>
+<%@include file="/partials/nav.jsp" %>
 <script>
 	location.href = "index.jsp";
 </script>

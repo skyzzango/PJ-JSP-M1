@@ -2,6 +2,7 @@ package post;
 
 import util.CommonDao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,11 +15,33 @@ public class PostDao extends CommonDao {
 	}
 
 	public static PostDao getInstance() {
-		return PostDao.LazyHolder.INSTANCE;
+		return LazyHolder.INSTANCE;
 	}
 
-	public List<PostDto> getPostList() {
-		String sql = "SELECT * FROM post ORDER BY idx DESC";
+	public int getPostCnt() {
+		int cnt = 0;
+		String sql = "select count(*) as totalCount from POST";
+		try (ResultSet rs = openConnection().executeQuery(sql)) {
+			if (rs.next()) {
+				cnt = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			System.err.println("PostDao function(getPostCnt) Something Problem!!");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	public List<PostDto> getPostList(int pageNum) {
+		int num = pageNum * 10;
+		String sql = "select B.* " +
+				"from (select /*+index_desc(A IDX)*/ ROWNUM as RNUM, A.* " +
+				"from (select * " +
+				"from POST order by IDX desc) A " +
+				"where ROWNUM <= " + num + ") B " +
+				"where B.RNUM >= " + (num - 9);
+
 		ArrayList<PostDto> postList = new ArrayList<>();
 		try (ResultSet rs = openConnection().executeQuery(sql)) {
 			while (rs.next()) {
@@ -42,8 +65,8 @@ public class PostDao extends CommonDao {
 
 	public int insertPost(PostDto post) {
 		int result = -1;
-		String sql = "INSERT INTO POST (idx, title, writer, reg_date, content) " +
-				"VALUES (post_seq.nextval, '" + post.getTitle() + "', '" + post.getWriter() + "', sysdate, '" + post.getContent() + "')";
+		String sql = "insert into POST (IDX, TITLE, WRITER, REG_DATE, CONTENT) " +
+				"values (POST_SEQ.nextval, '" + post.getTitle() + "', '" + post.getWriter() + "', sysdate, '" + post.getContent() + "')";
 		System.out.println();
 		try (Statement stmt = openConnection()) {
 			result = stmt.executeUpdate(sql);
@@ -57,7 +80,7 @@ public class PostDao extends CommonDao {
 	}
 
 	public PostDto getPost(int idx) {
-		String sql = "SELECT * FROM post WHERE idx = " + idx;
+		String sql = "select * from POST where IDX = " + idx;
 		PostDto post = new PostDto();
 		try (ResultSet rs = openConnection().executeQuery(sql)) {
 			while (rs.next()) {
@@ -75,6 +98,15 @@ public class PostDao extends CommonDao {
 			e.printStackTrace();
 		}
 		return post;
+	}
+
+	private PreparedStatement setPreparedStatement(PreparedStatement pstmt, Object status) throws SQLException {
+		if (status instanceof String) {
+			pstmt.setString(1, (String) status);
+		} else {
+			pstmt.setInt(1, (int) status);
+		}
+		return pstmt;
 	}
 
 	private static class LazyHolder {

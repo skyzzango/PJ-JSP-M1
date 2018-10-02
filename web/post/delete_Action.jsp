@@ -17,7 +17,7 @@
 
 <body>
 
-<%--<%@include file="/partials/nav.jsp" %>--%>
+<%@include file="/partials/nav.jsp" %>
 <%
 	String idx = request.getParameter("idx");
 	try {
@@ -41,7 +41,7 @@
 %>
 <script>
 	alert("게시글이 삭제 되었습니다.");
-	location.href = "redirect.jsp";
+	location.href = "redirect_Action.jsp";
 </script>
 
 <div class="container">

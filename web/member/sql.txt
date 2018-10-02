@@ -1,0 +1,21 @@
+# create table for post
+CREATE TABLE member
+(
+    email varchar2(40) PRIMARY KEY NOT NULL,
+    pass varchar2(20) NOT NULL,
+    name varchar2(20) NOT NULL,
+    phone varchar2(30) NOT NULL,
+    zip_code varchar2(20) NOT NULL,
+    address varchar2(100) NOT NULL,
+    reg_date date NOT NULL
+);
+
+# create table for zip
+CREATE TABLE zip_tap
+(
+    zip_code varchar2(7),
+    area1 varchar2(10),
+    area2 varchar2(20),
+    area3 varchar2(30),
+    area4 varchar2(50)
+);

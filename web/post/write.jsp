@@ -14,14 +14,14 @@
 
 <body>
 
-<%--<%@include file="/partials/nav.jsp" %>--%>
+<%@include file="/partials/nav.jsp" %>
 
 
 <div class="container">
 
 	<div class="starter-template">
 		<h1>게시글 작성</h1><br>
-		<form action="insert.jsp" method="post" onsubmit="return formCheck();">
+		<form action="insert_Action.jsp" method="post" onsubmit="return formCheck();">
 			<div class="form-group">
 				<label for="title">제목</label>
 				<input type="text" class="form-control" name="title" id="title" placeholder="">
